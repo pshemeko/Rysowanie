@@ -1,0 +1,19 @@
+https://www.mblog.boo.pl/artykul-23-gnuplot-czesc-rysowanie-style-calosc.html
+# - komentarz
+//
+plot 'nazwapliku' with yerrorbars   - rysuje kresy do odcyhylenia standardowego - bledy na y
+//
+prostokoty wypelnione kolorem obramowania
+plot 'nazwapliku'with boxes fillstyle solid 1
+plot 'nazwapliku'with boxes fs solid 1		- to samo
+(zamiast 1 moze byc wartosc [0,1] - 0 -brak wypelnienia, 1 pelne wypelnienie
+
+aby narysoac drugi na tym samym wykresie uzywamy funkcji replot zamiast plot
+lub :
+W³¹czaj¹c tryb multi mamy mo¿liwoœæ dorysowywania kolejnych wykresów funkcji za pomoc¹ polecenia plot. Po zakoñczeniu pracy w tym trybie nale¿y go wy³¹czyæ. Poka¿ê to na przyk³adzie:
+set multi;
+plot [-pi:pi] sin(x) with dots;
+plot cos(x*pi)-3;
+plot tan(x**2);
+unset multi;
+UWAGA! Zakres wykresu ustala siê tylko jeden raz, przy pierwszej z funkcji - dotyczy to ka¿dego z opisywanych sposobów!

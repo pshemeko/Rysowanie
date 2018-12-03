@@ -42,14 +42,14 @@ struct Strategie
     {
         switch (str)
         {
-        case RDUL: return "RDUL"; break;
-        case RDLU: return "RDLU"; break;
-        case DRUL: return "DRUL"; break;
-        case DRLU: return "DRLU"; break;
-        case LUDR: return "LUDR"; break;
-        case LURD: return "LURD"; break;
-        case ULDR: return "ULDR"; break;
-        case ULRD: return "ULRD"; break;
+        case RDUL: return "rdul"; break;
+        case RDLU: return "rdlu"; break;
+        case DRUL: return "drul"; break;
+        case DRLU: return "drlu"; break;
+        case LUDR: return "ludr"; break;
+        case LURD: return "lurd"; break;
+        case ULDR: return "uldr"; break;
+        case ULRD: return "ulrd"; break;
 
         default: return "Nieznane"; break;
         }

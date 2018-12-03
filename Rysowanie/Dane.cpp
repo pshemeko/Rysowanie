@@ -42,7 +42,7 @@ void Glowna::wczytaj()
 		{
 			plik >> elem;
             if (elem.algorytm == "dfs"  || elem.algorytm == "DFS")  dfsy.push_back(elem);
-            if (elem.algorytm == "bfs"  || elem.algorytm == "BFS")  dfsy.push_back(elem);
+            if (elem.algorytm == "bfs"  || elem.algorytm == "BFS")  bfsy.push_back(elem);
             if (elem.algorytm == "astr" || elem.algorytm == "ASTR") astars.push_back(elem);
  			dane.push_back(elem);
 		}
@@ -176,7 +176,8 @@ void Glowna::rysuj_Ilosc_przetworzonych_stanow(Strategie::Strategy st)
         //std::vector<int> astrWartosci(MAX_GLEBOKOSC);
         //std::vector<int> wartosci(MAX_GLEBOKOSC);
 
-        std::vector< std::vector<int> > wartosci(MAX_GLEBOKOSC);
+        std::vector< std::vector<int> > wartosci;
+		int a = 0;
         for (int i = 0; i < MAX_GLEBOKOSC; ++i) wartosci.push_back(std::vector<int>(8)); // 8 porz¹dków
 
 
@@ -185,7 +186,8 @@ void Glowna::rysuj_Ilosc_przetworzonych_stanow(Strategie::Strategy st)
             // mamy porzadki 'RDUL', 'RDLU',    'DRUL',     'DRLU',     'LUDR',         'LURD',     'ULDR',         'ULRD'
             //int sumaRDUL = 0, sumaRDLU = 0, sumaDRUL = 0, sumaDRLU = 0, sumaLUDR = 0, sumaLURD = 0, sumaULDR = 0, sumaULRD = 0;
             std::vector<int> suma(8);
-            for (auto x : *wsk) // przegladam tabloce
+			
+            for (auto x : *wsk) // przegladam tablice
             {
                 if (i + 1 == x.glebokosc)
                 {
