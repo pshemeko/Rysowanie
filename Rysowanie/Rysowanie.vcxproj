@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Dane.h" />
+    <ClInclude Include="Enum.h" />
     <ClInclude Include="Gnuplot.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
