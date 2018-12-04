@@ -54,13 +54,21 @@ class Glowna
     std::vector<Dana> bfsy;
     std::vector<Dana> astars;
 
+    void open(); // otwiera plik  ze sciezki i parsuje do tych wectorow danych: dane, dfsy, bfsy, astars
+    void close();
+
 public:
 	Glowna(char* nazwaPliku);
 	~Glowna();
-	void open();
-	void close();
-    void rysuj_Ilosc_przetworzonych_stanow(Strategie::Strategy st);
 
+
+    void licz_Ilosc_przetworzonych_stanow(Strategie::Strategy st);
+    void licz_Dlugosc_Znalezionego_rozwiazania(Strategie::Strategy st);
+    void licz_Ilosc_odwiedzonych_stanow(Strategie::Strategy st);
+    void licz_Maksymalna_glebokosc_rekursji(Strategie::Strategy st);
+    void licz_Czas_trwania_procesu(Strategie::Strategy st);
+
+    void oblicz_wszystko();
 
 	void wczytaj(); // parsuje do plikow
 	void wypisz(Strategie::Strategy st);

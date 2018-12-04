@@ -26,6 +26,12 @@ struct Strategie
         ULRD
     };
 
+    enum Heuristics
+    {
+        hamm = 0,
+        manh
+    };
+
     static std::string toString(const Strategy& str)
     {
         switch (str)
@@ -54,4 +60,16 @@ struct Strategie
         default: return "Nieznane"; break;
         }
     }
+
+    static std::string toString(const Heuristics& str)
+    {
+        switch (str)
+        {
+        case hamm: return "hamm"; break;
+        case manh: return "manh"; break;
+
+        default: return "Nieznane"; break;
+        }
+    }
+
 };
