@@ -1,0 +1,9 @@
+#srednie wartosci danych metryki !!Wszystkie !! w zaleznosci od glebokosci rozwiazania ze wszystkich porzadkow
+#glebokosc, bfs, dfs, astar, odchylenie bfs, odchylenie dfs, odchylenie astr
+1 1 1 1 0 0 0
+2 3 154259 3 1.25 -6.00648e+08 1.25
+3 9 164971 6 13.725 3.06543e+08 2.5
+4 20 106458 9 37.9167 -1.18649e+07 3.27083
+5 42 194246 12 139.907 7.39183e+07 4.67593
+6 91 153788 15 610.084 1.09939e+08 13.2383
+7 200 229889 19 2812.52 1.9301e+08 41.7406

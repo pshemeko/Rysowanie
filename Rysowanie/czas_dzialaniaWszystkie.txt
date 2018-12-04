@@ -1,0 +1,9 @@
+#srednie wartosci danych metryki !!Wszystkie !! w zaleznosci od glebokosci rozwiazania ze wszystkich porzadkow
+#glebokosc, bfs, dfs, astar
+1 0 0 0
+2 0 379 0
+3 0 391 0
+4 0 257 0
+5 0 462 0
+6 0 367 0
+7 2 550 0

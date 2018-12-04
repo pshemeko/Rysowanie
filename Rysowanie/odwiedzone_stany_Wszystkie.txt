@@ -1,0 +1,9 @@
+#srednie wartosci danych metryki !!Wszystkie !! w zaleznosci od glebokosci rozwiazania ze wszystkich porzadkow
+#glebokosc, bfs, dfs, astar
+1 3 3 3
+2 9 137907 11
+3 22 146520 18
+4 45 96210 23
+5 91 173906 29
+6 193 138319 35
+7 420 204955 45

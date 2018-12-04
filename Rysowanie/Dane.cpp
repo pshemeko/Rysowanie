@@ -123,6 +123,12 @@ void Glowna::licz_Ilosc_przetworzonych_stanow(Strategie::Strategy st)
        // std::vector<int> wartosci(MAX_GLEBOKOSC);
         // gdy all
         //std::vector<int> wartosci(MAX_GLEBOKOSC);
+        std::vector<std::vector<int>> liczbyDfs, liczbyBfs, liczbyAstr;
+        for (int i = 0; i < MAX_GLEBOKOSC; ++i) {   liczbyDfs.push_back(std::vector<int>(0)); 
+                                                    liczbyBfs.push_back(std::vector<int>(0));
+                                                    liczbyAstr.push_back(std::vector<int>(0));
+                                                }
+        std::vector<float> odchylenieDfs(MAX_GLEBOKOSC), odchylenieBfs(MAX_GLEBOKOSC), odchylenieAstr(MAX_GLEBOKOSC);
     
         for (int i = 0; i< MAX_GLEBOKOSC; ++i)  // przez wszystkie glebokosci
         {
@@ -135,24 +141,46 @@ void Glowna::licz_Ilosc_przetworzonych_stanow(Strategie::Strategy st)
                     {
                         bfsWartosci[i] += x.iloscStanowPrzetworzonych; // licz sume // TODO zrob enuma ktory bedie okreslal ktoore pole
                         ++sumaBfs;
+                        liczbyBfs[i].push_back(x.iloscStanowPrzetworzonych);
                     }
                     if (x.algorytm == Strategie::toString(Strategie::Strategy::dfs)) // i gdy strategia jest ta wybrana
                     {
                         dfsWartosci[i] += x.iloscStanowPrzetworzonych; // licz sume // TODO zrob enuma ktory bedie okreslal ktoore pole
-                        ++sumaDfs;
+                        ++sumaDfs; 
+                        liczbyDfs[i].push_back(x.iloscStanowPrzetworzonych);
                     }
                     if (x.algorytm == Strategie::toString(Strategie::Strategy::astr)) // i gdy strategia jest ta wybrana
                     {
                         astrWartosci[i] += x.iloscStanowPrzetworzonych; // licz sume // TODO zrob enuma ktory bedie okreslal ktoore pole
                         ++sumaAstar;
+                        liczbyAstr[i].push_back(x.iloscStanowPrzetworzonych);
                     }
                 }
             }
             if(sumaDfs != 0 && sumaBfs != 0 && sumaAstar != 0)
             { 
+                // obliczmy wariacje do odchylenia
+                double wariacja = 0.0;
+
+
                 bfsWartosci[i] = bfsWartosci[i] / sumaBfs;  // licze srednia
                 dfsWartosci[i] = dfsWartosci[i] / sumaDfs;
                 astrWartosci[i] = astrWartosci[i] / sumaAstar;
+                for (auto x : liczbyDfs[i])
+                {
+                    odchylenieDfs[i] += (x - dfsWartosci[i]) * (x - dfsWartosci[i]);
+                }
+                for (auto x : liczbyBfs[i])
+                {
+                    odchylenieBfs[i] += (x - bfsWartosci[i]) * (x - bfsWartosci[i]);
+                }
+                for (auto x : liczbyAstr[i])
+                {
+                    odchylenieAstr[i] += (x - astrWartosci[i]) * (x - astrWartosci[i]);
+                }
+                odchylenieDfs[i] /= (float)liczbyDfs[i].size();
+                odchylenieBfs[i] /= (float)liczbyBfs[i].size();
+                odchylenieAstr[i] /= (float)liczbyAstr[i].size();
             }
             
 
@@ -165,10 +193,11 @@ void Glowna::licz_Ilosc_przetworzonych_stanow(Strategie::Strategy st)
         if (pliczek.is_open())
         {
             pliczek << "#srednie wartosci danych metryki !!" + Strategie::toString(st) + " !! w zaleznosci od glebokosci rozwiazania ze wszystkich porzadkow" << std::endl
-                << "#glebokosc, bfs, dfs, astar" << std::endl;
+                << "#glebokosc, bfs, dfs, astar, odchylenie bfs, odchylenie dfs, odchylenie astr" << std::endl;
             for (int i = 0; i < MAX_GLEBOKOSC; ++i)
             {
-                pliczek << i+1 << " " << bfsWartosci[i] << " " << dfsWartosci[i] << " " << astrWartosci[i] << std::endl;
+                pliczek << i+1 << " " << bfsWartosci[i] << " " << dfsWartosci[i] << " " << astrWartosci[i] 
+                    << " " << odchylenieBfs[i] << " " << odchylenieDfs[i] << " " << odchylenieAstr[i] << std::endl;
             }
             pliczek.close();
             
@@ -181,9 +210,22 @@ void Glowna::licz_Ilosc_przetworzonych_stanow(Strategie::Strategy st)
     else if (st == Strategie::Strategy::bfs || st == Strategie::Strategy::dfs)
     {
 
-        std::vector< std::vector<int> > wartosci;
+        std::vector< std::vector<int> > wartosci; // suma dla [danej glebokosci] i [danego porzadku] wszystkich elementow - potem bedzie to srednia
 		int a = 0;
         for (int i = 0; i < MAX_GLEBOKOSC; ++i) wartosci.push_back(std::vector<int>(8)); // 8 porz¹dków
+        ///do odchylenia
+        std::vector<std::vector<std::vector<int>>> liczby; // liczby wszystkie pierwszy wymiar to glebokosci drugi porzadki a trzeci to vektor liczb 
+        // teraz tworze ten vector liczby        
+                std::vector<std::vector<int>> il; 
+                for (int j = 0; j < 8; ++j)
+                {
+                    il.push_back(std::vector<int>(0));
+                }
+                for (int i = 0; i < MAX_GLEBOKOSC; ++i)
+                {
+                    liczby.push_back(il);            
+                }
+        std::vector<std::vector<float>> odchylenia(8);  // ????????????? czy wywali blad jest ich tyle co porzadkow
 
 
         for (int i = 0; i < MAX_GLEBOKOSC; ++i)  // przez wszystkie glebokosci
@@ -203,56 +245,79 @@ void Glowna::licz_Ilosc_przetworzonych_stanow(Strategie::Strategy st)
                             //++sumaRDUL;
                             suma[Strategie::Porzadki::RDUL]++;
                             wartosci[i][Strategie::Porzadki::RDUL] += x.iloscStanowPrzetworzonych;
+                            liczby[i][Strategie::Porzadki::RDUL].push_back(x.iloscStanowPrzetworzonych);
                         }
                         if (x.kolenosc == Strategie::toString(Strategie::Porzadki::RDLU)) // i gdy strategia jest ta wybrana
                         {
                             //++sumaRDLU;
                             suma[Strategie::Porzadki::RDLU]++;
                             wartosci[i][Strategie::Porzadki::RDLU] += x.iloscStanowPrzetworzonych;
+                            liczby[i][Strategie::Porzadki::RDLU].push_back(x.iloscStanowPrzetworzonych);
                         }
                         if (x.kolenosc == Strategie::toString(Strategie::Porzadki::DRUL)) // i gdy strategia jest ta wybrana
                         {
                             //++sumaDRUL;
                             suma[Strategie::Porzadki::DRUL]++;
                             wartosci[i][Strategie::Porzadki::DRUL] += x.iloscStanowPrzetworzonych;
+                            liczby[i][Strategie::Porzadki::DRUL].push_back(x.iloscStanowPrzetworzonych);
                         }
                         if (x.kolenosc == Strategie::toString(Strategie::Porzadki::DRLU)) // i gdy strategia jest ta wybrana
                         {
                             //++sumaDRLU;
                             suma[Strategie::Porzadki::DRLU]++;
                             wartosci[i][Strategie::Porzadki::DRLU] += x.iloscStanowPrzetworzonych;
+                            liczby[i][Strategie::Porzadki::DRLU].push_back(x.iloscStanowPrzetworzonych);
                         }
                         if (x.kolenosc == Strategie::toString(Strategie::Porzadki::LUDR)) // i gdy strategia jest ta wybrana
                         {
                             //++sumaLUDR;
                             suma[Strategie::Porzadki::LUDR]++;
                             wartosci[i][Strategie::Porzadki::LUDR] += x.iloscStanowPrzetworzonych;
+                            liczby[i][Strategie::Porzadki::LUDR].push_back(x.iloscStanowPrzetworzonych);
                         }
                         if (x.kolenosc == Strategie::toString(Strategie::Porzadki::LURD)) // i gdy strategia jest ta wybrana
                         {
                             //++sumaLURD;
                             suma[Strategie::Porzadki::LURD]++;
                             wartosci[i][Strategie::Porzadki::LURD] += x.iloscStanowPrzetworzonych;
+                            liczby[i][Strategie::Porzadki::LURD].push_back(x.iloscStanowPrzetworzonych);
                         }
                         if (x.kolenosc == Strategie::toString(Strategie::Porzadki::ULDR)) // i gdy strategia jest ta wybrana
                         {
                             //++sumaULDR;
                             suma[Strategie::Porzadki::ULDR]++;
                             wartosci[i][Strategie::Porzadki::ULDR] += x.iloscStanowPrzetworzonych;
+                            liczby[i][Strategie::Porzadki::ULDR].push_back(x.iloscStanowPrzetworzonych);
                         }
                         if (x.kolenosc == Strategie::toString(Strategie::Porzadki::ULRD)) // i gdy strategia jest ta wybrana
                         {
                             //++sumaULRD;
                             suma[Strategie::Porzadki::ULRD]++;
                             wartosci[i][Strategie::Porzadki::ULRD] += x.iloscStanowPrzetworzonych;
+                            liczby[i][Strategie::Porzadki::ULRD].push_back(x.iloscStanowPrzetworzonych);
                         }
                     }
                 }            
             }
+            // srdnie
             for (int j = 0; j < 8; ++j)
             {
-             if(suma[j] !=0 ) wartosci[i][j] = wartosci[i][j] / suma[j];
+                 if(suma[j] !=0 ) wartosci[i][j] = wartosci[i][j] / suma[j]; // teraz jest srednia
+                 
+                 // odchylenie
+
+                 for (auto x : liczby[i][j]) // i - glebokosci, j - kolejnosci tj lurd....
+                 {
+                     odchylenia[i][j] += (x - wartosci[i][j]) * (x - wartosci[i][j]);
+                 }
+                 for (int z = 0; z < 8; ++z)
+                 {
+                     odchylenia[i][z] /= (float)liczby[i][z].size();
+                 }
             }
+            
+
+
            
         }
 
@@ -263,13 +328,17 @@ void Glowna::licz_Ilosc_przetworzonych_stanow(Strategie::Strategy st)
         if (pliczek.is_open())
         {
             pliczek << "#srednie wartosci danych metryki !!" + Strategie::toString(st) +" !! w zaleznosci od glebokosci rozwiazania" << std::endl 
-                << "#glebokosc, 'RDUL', 'RDLU', 'DRUL', 'DRLU', 'LUDR',  'LURD', 'ULDR', 'ULRD'" << std::endl;
+                << "#glebokosc, 'RDUL', 'RDLU', 'DRUL', 'DRLU', 'LUDR',  'LURD', 'ULDR', 'ULRD' , odchylenia standardowe dla tych 8 porzadkow po kolei" << std::endl;
             for (int i = 0; i < MAX_GLEBOKOSC; ++i) // i to sa numery glebokosci
             { 
                 pliczek << i + 1;
                 for (int j = 0; j < 8; j++) // j to sa po kolei kolejnosci tj po kolei 'RDUL', 'RDLU', 'DRUL', 'DRLU', 'LUDR',  'LURD', 'ULDR', 'ULRD'
                 {
                     pliczek << " " << wartosci[i][j];
+                }
+                for (int j = 0; j < 8; ++j)
+                {
+                    pliczek << " " << odchylenia[i][j];
                 }
                 pliczek << std::endl;
             }
@@ -301,8 +370,22 @@ void Glowna::licz_Ilosc_przetworzonych_stanow(Strategie::Strategy st)
     {
         //TODO
         std::vector< std::vector<int> > wartosci;
-        int a = 0;
+        //int a = 0;
         for (int i = 0; i < MAX_GLEBOKOSC; ++i) wartosci.push_back(std::vector<int>(2)); // 8 porzadków
+
+         //do odchylenia
+        std::vector<std::vector<std::vector<int>>> liczby; // liczby wszystkie pierwszy wymiar to glebokosci drugi porzadki a trzeci to vektor liczb 
+                                                           // teraz tworze ten vector liczby        
+        std::vector<std::vector<int>> il;
+        for (int j = 0; j < 2; ++j)
+        {
+            il.push_back(std::vector<int>(0));
+        }
+        for (int i = 0; i < MAX_GLEBOKOSC; ++i)
+        {
+            liczby.push_back(il);
+        }
+        std::vector<std::vector<float>> odchylenia(2);  // ????????????? czy wywali blad jest ich tyle co porzadkow
 
 
         for (int i = 0; i < MAX_GLEBOKOSC; ++i)  // przez wszystkie glebokosci
@@ -319,11 +402,13 @@ void Glowna::licz_Ilosc_przetworzonych_stanow(Strategie::Strategy st)
                         {
                             suma[Strategie::Heuristics::manh]++;
                             wartosci[i][Strategie::Heuristics::manh] += x.iloscStanowPrzetworzonych;
+                            liczby[i][Strategie::Heuristics::manh].push_back(x.iloscStanowPrzetworzonych);
                         }
                         if (x.kolenosc == Strategie::toString(Strategie::Heuristics::hamm)) // i gdy strategia jest ta wybrana
                         {
                             suma[Strategie::Heuristics::hamm]++;
                             wartosci[i][Strategie::Heuristics::hamm] += x.iloscStanowPrzetworzonych;
+                            liczby[i][Strategie::Heuristics::hamm].push_back(x.iloscStanowPrzetworzonych);
                         }
                     }
                 }
@@ -331,6 +416,17 @@ void Glowna::licz_Ilosc_przetworzonych_stanow(Strategie::Strategy st)
             for (int j = 0; j < 2; ++j)
             {
                 if (suma[j] != 0) wartosci[i][j] = wartosci[i][j] / suma[j];
+
+                // odchylenie
+
+                for (auto x : liczby[i][j]) // i - glebokosci, j - metryki tj hamm, manh,....
+                {
+                    odchylenia[i][j] += (x - wartosci[i][j]) * (x - wartosci[i][j]);
+                }
+                for (int z = 0; z < 2; ++z)
+                {
+                    odchylenia[i][z] /= (float)liczby[i][z].size();
+                }
             }
         }
 
@@ -341,13 +437,18 @@ void Glowna::licz_Ilosc_przetworzonych_stanow(Strategie::Strategy st)
         if (pliczek.is_open())
         {
             // nag³ówek pliku 
-            pliczek << "#srednie wartosci danych metryk  A* GWIAZDKA w zaleznosci od glebokosci rozwiazania" << std::endl <<"#glebokosc, hamm, manh" << std::endl;
+            pliczek << "#srednie wartosci danych metryk  A* GWIAZDKA w zaleznosci od glebokosci rozwiazania" << std::endl 
+                <<"#glebokosc, hamm, manh, odchylenie std dla hamm, odchylenie std dla manh" << std::endl;
             for (int i = 0; i < MAX_GLEBOKOSC; ++i) // i to sa numery glebokosci
             {
                 pliczek << i + 1;
                 for (int j = 0; j < 2; j++) // j to sa po kolei kolejnosci tj po kolei: hamm, manh
                 {
                     pliczek << " " << wartosci[i][j];
+                }
+                for (int j = 0; j < 2; j++) // j to sa po kolei kolejnosci tj po kolei: hamm, manh
+                {
+                    pliczek << " " << odchylenia[i][j];
                 }
                 pliczek << std::endl;
             }
