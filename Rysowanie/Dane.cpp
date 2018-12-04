@@ -274,6 +274,22 @@ void Glowna::rysuj_Ilosc_przetworzonych_stanow(Strategie::Strategy st)
 
         }
         else SHOW_DEBUG("blad otwarcia w rysowaniu pliku:" << nazwaPliku << std::endl;);
+		// rysowanie
+
+		std::string komenda = " plot '" + nazwaPliku + "' using 1:2 with boxes  fs solid 1; "; //+
+
+			" replot '" + nazwaPliku + "' using 1:3 with boxes fs solid 1; " +
+			" replot '" + nazwaPliku + "' using 1:4 with boxes fs solid 1; " +
+			" replot '" + nazwaPliku + "' using 1:5 with boxes fs solid 1; " +
+			" replot '" + nazwaPliku + "' using 1:6 with boxes fs solid 1; " +
+			" replot '" + nazwaPliku + "' using 1:7 with boxes fs solid 1; " +
+			" replot '" + nazwaPliku + "' using 1:8 with boxes fs solid 1; " +
+			" replot '" + nazwaPliku + "' using 1:9 with boxes fs solid 1; ";
+		//// + odchylenie  tj 1:2:10
+
+		std::string dwa = "  set boxwidth 0.5; plot  'c:/a/b.txt' using 1:2 with boxes; replot 'c:/a/b.txt' using 1:2:3 with yerrorbars ; ";
+		
+		rysuj1(komenda, nazwaPliku);
 
 
 
