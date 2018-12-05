@@ -39,7 +39,7 @@ struct Strategie
         case bfs: return "bfs"; break;
         case dfs: return "dfs"; break;
         case astr : return "astr"; break;
-        case all: return "Wszystkie"; break;
+        case all: return "all"; break;
         default: return "Nieznane"; break;
         }
     }

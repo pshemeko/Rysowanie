@@ -75,6 +75,18 @@ public:
 
 	void test();    // skasuj
     void rysuj_Ilosc_odwiedzonych_stanow();
+	/////////////////////////////////
+	void zapisz_do_wykresu_przetworzonych_stanow(Strategie::Strategy st);
 
+	void zapisz_do_wykresuWszystko()
+	{
+		std::vector<Strategie::Strategy> strategie{ Strategie::Strategy::all,Strategie::Strategy::bfs,Strategie::Strategy::dfs,Strategie::Strategy::astr };
+		for (auto x : strategie)
+		{
+			zapisz_do_wykresu_przetworzonych_stanow(x);
+			
+
+		}
+	};
 };
 

@@ -1486,3 +1486,48 @@ std::istream& operator>>(std::istream& os,  Dana& element)
 
 	return os;
 }
+
+
+
+
+
+
+
+
+void Glowna::zapisz_do_wykresu_przetworzonych_stanow(Strategie::Strategy st) // vek przekazuje konkretny ktora strategia
+{
+	/// potrzebuje w pliku 
+	// porzadek LURD, glebokosc, ilosc stanow przetworzonych - naklepsze tak zrobie
+	// 4 pliki jeden bfs, jeden dns, jeden astar jeden all
+	//kazdy porzadek w osobnym pliku ma byc i wypoisywac poziom oraz wartosc - czyli plikow 8* - nie to zle
+
+	std::string nazwaPliku = Strategie::toString(st) + "_przetworzone_stany_" + ".txt";
+	std::fstream pliczek;// (nazwaPliku);
+
+
+	std::shared_ptr<std::vector<Dana>> wsk;
+	if (st == Strategie::Strategy::all) wsk = std::make_shared<std::vector<Dana>>(dane);
+	if (st == Strategie::Strategy::bfs) wsk = std::make_shared<std::vector<Dana>>(bfsy);
+	if (st == Strategie::Strategy::dfs) wsk = std::make_shared<std::vector<Dana>>(dfsy);
+	if (st == Strategie::Strategy::astr) wsk = std::make_shared<std::vector<Dana>>(astars);
+
+	pliczek.open(nazwaPliku, std::ios::out);
+	if (pliczek.is_open())
+	{
+		if (st == Strategie::Strategy::all)
+		{
+			for (auto x : *wsk)
+			{
+				pliczek << x.algorytm << " " << x.glebokosc << " " << x.iloscStanowPrzetworzonych << std::endl;
+			}
+		}else
+		{
+			for (auto x : *wsk)
+			{
+				pliczek << x.kolenosc << " " << x.glebokosc << " " << x.iloscStanowPrzetworzonych << std::endl;
+			}
+		}
+	}
+	else SHOW_DEBUG("Plik " + nazwaPliku + " nie zostal otwarty!!!\n";);
+	pliczek.close();
+}
