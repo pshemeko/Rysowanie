@@ -44,7 +44,8 @@ void Glowna::wczytaj()
 			plik >> elem;
             if (elem.algorytm == "dfs"  || elem.algorytm == "DFS")  dfsy.push_back(elem);
             if (elem.algorytm == "bfs"  || elem.algorytm == "BFS")  bfsy.push_back(elem);
-            if (elem.algorytm == "astr" || elem.algorytm == "ASTR") astars.push_back(elem);
+            if (elem.algorytm == "astr" || elem.algorytm == "ASTR") 
+                astars.push_back(elem);
  			dane.push_back(elem);
 		}
 	}	
@@ -1503,8 +1504,7 @@ void Glowna::zapisz_do_wykresu_przetworzonych_stanow(Strategie::Strategy st) // 
 
 	std::string nazwaPliku = Strategie::toString(st) + "_przetworzone_stany_" + ".txt";
 	std::fstream pliczek;// (nazwaPliku);
-
-
+    
 	std::shared_ptr<std::vector<Dana>> wsk;
 	if (st == Strategie::Strategy::all) wsk = std::make_shared<std::vector<Dana>>(dane);
 	if (st == Strategie::Strategy::bfs) wsk = std::make_shared<std::vector<Dana>>(bfsy);
@@ -1530,4 +1530,138 @@ void Glowna::zapisz_do_wykresu_przetworzonych_stanow(Strategie::Strategy st) // 
 	}
 	else SHOW_DEBUG("Plik " + nazwaPliku + " nie zostal otwarty!!!\n";);
 	pliczek.close();
+}
+
+void Glowna::zapisz_do_wykresu_dlugosc_rozwiazania(Strategie::Strategy st)
+{
+    //TODO
+
+    std::string nazwaPliku = Strategie::toString(st) + "_dlugosc_rozwiazania_" + ".txt";
+    std::fstream pliczek;// (nazwaPliku);
+
+    std::shared_ptr<std::vector<Dana>> wsk;
+    if (st == Strategie::Strategy::all) wsk = std::make_shared<std::vector<Dana>>(dane);
+    if (st == Strategie::Strategy::bfs) wsk = std::make_shared<std::vector<Dana>>(bfsy);
+    if (st == Strategie::Strategy::dfs) wsk = std::make_shared<std::vector<Dana>>(dfsy);
+    if (st == Strategie::Strategy::astr) wsk = std::make_shared<std::vector<Dana>>(astars);
+
+    pliczek.open(nazwaPliku, std::ios::out);
+    if (pliczek.is_open())
+    {
+        if (st == Strategie::Strategy::all)
+        {
+            for (auto x : *wsk)
+            {
+                pliczek << x.algorytm << " " << x.glebokosc << " " << x.dlugoscRozwiazania << std::endl;
+            }
+        }
+        else
+        {
+            for (auto x : *wsk)
+            {
+                pliczek << x.kolenosc << " " << x.glebokosc << " " << x.dlugoscRozwiazania << std::endl;
+            }
+        }
+    }
+    else SHOW_DEBUG("Plik " + nazwaPliku + " nie zostal otwarty!!!\n";);
+    pliczek.close();
+}
+
+void Glowna::zapisz_do_wykresu_odwiedzonych_stanow(Strategie::Strategy st)
+{
+    std::string nazwaPliku = Strategie::toString(st) + "_odwiedzone_stany_" + ".txt";
+    std::fstream pliczek;// (nazwaPliku);
+
+    std::shared_ptr<std::vector<Dana>> wsk;
+    if (st == Strategie::Strategy::all) wsk = std::make_shared<std::vector<Dana>>(dane);
+    if (st == Strategie::Strategy::bfs) wsk = std::make_shared<std::vector<Dana>>(bfsy);
+    if (st == Strategie::Strategy::dfs) wsk = std::make_shared<std::vector<Dana>>(dfsy);
+    if (st == Strategie::Strategy::astr) wsk = std::make_shared<std::vector<Dana>>(astars);
+
+    pliczek.open(nazwaPliku, std::ios::out);
+    if (pliczek.is_open())
+    {
+        if (st == Strategie::Strategy::all)
+        {
+            for (auto x : *wsk)
+            {
+                pliczek << x.algorytm << " " << x.glebokosc << " " << x.iloscStanowOdwiedzonych << std::endl;
+            }
+        }
+        else
+        {
+            for (auto x : *wsk)
+            {
+                pliczek << x.kolenosc << " " << x.glebokosc << " " << x.iloscStanowOdwiedzonych << std::endl;
+            }
+        }
+    }
+    else SHOW_DEBUG("Plik " + nazwaPliku + " nie zostal otwarty!!!\n";);
+    pliczek.close();
+}
+
+void Glowna::zapisz_do_wykresu_maksymalna_glebokosc_rekursji(Strategie::Strategy st)
+{
+    std::string nazwaPliku = Strategie::toString(st) + "_glebokosc_rekursji_" + ".txt";
+    std::fstream pliczek;// (nazwaPliku);
+
+    std::shared_ptr<std::vector<Dana>> wsk;
+    if (st == Strategie::Strategy::all) wsk = std::make_shared<std::vector<Dana>>(dane);
+    if (st == Strategie::Strategy::bfs) wsk = std::make_shared<std::vector<Dana>>(bfsy);
+    if (st == Strategie::Strategy::dfs) wsk = std::make_shared<std::vector<Dana>>(dfsy);
+    if (st == Strategie::Strategy::astr) wsk = std::make_shared<std::vector<Dana>>(astars);
+
+    pliczek.open(nazwaPliku, std::ios::out);
+    if (pliczek.is_open())
+    {
+        if (st == Strategie::Strategy::all)
+        {
+            for (auto x : *wsk)
+            {
+                pliczek << x.algorytm << " " << x.glebokosc << " " << x.maxGlebokoscrekursji << std::endl;
+            }
+        }
+        else
+        {
+            for (auto x : *wsk)
+            {
+                pliczek << x.kolenosc << " " << x.glebokosc << " " << x.maxGlebokoscrekursji << std::endl;
+            }
+        }
+    }
+    else SHOW_DEBUG("Plik " + nazwaPliku + " nie zostal otwarty!!!\n";);
+    pliczek.close();
+}
+
+void Glowna::zapisz_do_wykresu_czas_procesu(Strategie::Strategy st)
+{
+    std::string nazwaPliku = Strategie::toString(st) + "_czas_procesu_" + ".txt";
+    std::fstream pliczek;// (nazwaPliku);
+
+    std::shared_ptr<std::vector<Dana>> wsk;
+    if (st == Strategie::Strategy::all) wsk = std::make_shared<std::vector<Dana>>(dane);
+    if (st == Strategie::Strategy::bfs) wsk = std::make_shared<std::vector<Dana>>(bfsy);
+    if (st == Strategie::Strategy::dfs) wsk = std::make_shared<std::vector<Dana>>(dfsy);
+    if (st == Strategie::Strategy::astr) wsk = std::make_shared<std::vector<Dana>>(astars);
+
+    pliczek.open(nazwaPliku, std::ios::out);
+    if (pliczek.is_open())
+    {
+        if (st == Strategie::Strategy::all)
+        {
+            for (auto x : *wsk)
+            {
+                pliczek << x.algorytm << " " << x.glebokosc << " " << x.czas << std::endl;
+            }
+        }
+        else
+        {
+            for (auto x : *wsk)
+            {
+                pliczek << x.kolenosc << " " << x.glebokosc << " " << x.czas << std::endl;
+            }
+        }
+    }
+    else SHOW_DEBUG("Plik " + nazwaPliku + " nie zostal otwarty!!!\n";);
+    pliczek.close();
 }

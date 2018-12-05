@@ -77,14 +77,21 @@ public:
     void rysuj_Ilosc_odwiedzonych_stanow();
 	/////////////////////////////////
 	void zapisz_do_wykresu_przetworzonych_stanow(Strategie::Strategy st);
+    void zapisz_do_wykresu_dlugosc_rozwiazania(Strategie::Strategy st);
+    void zapisz_do_wykresu_odwiedzonych_stanow(Strategie::Strategy st);
+    void zapisz_do_wykresu_maksymalna_glebokosc_rekursji(Strategie::Strategy st);
+    void zapisz_do_wykresu_czas_procesu(Strategie::Strategy st);
 
 	void zapisz_do_wykresuWszystko()
 	{
 		std::vector<Strategie::Strategy> strategie{ Strategie::Strategy::all,Strategie::Strategy::bfs,Strategie::Strategy::dfs,Strategie::Strategy::astr };
 		for (auto x : strategie)
 		{
-			zapisz_do_wykresu_przetworzonych_stanow(x);
-			
+			//zapisz_do_wykresu_przetworzonych_stanow(x);
+            //zapisz_do_wykresu_odwiedzonych_stanow(x);
+            //zapisz_do_wykresu_dlugosc_rozwiazania(x);
+            //zapisz_do_wykresu_maksymalna_glebokosc_rekursji(x);
+            zapisz_do_wykresu_czas_procesu(x);
 
 		}
 	};
