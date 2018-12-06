@@ -40,7 +40,7 @@ struct Dana{
 	int iloscStanowOdwiedzonych;//ilosc odwiedzonych stanow
 	int iloscStanowPrzetworzonych;// ilosc przetworzonych stanow
 	int maxGlebokoscrekursji;//maksymalna glebokosc rekurji
-	int czas;//czas w milisekundach
+	double czas;//czas w milisekundach
 	friend std::ostream& operator<< (std::ostream& stream, const Dana& matrix);
 	friend std::istream& operator>>(std::istream& os, Dana& puz);
 };
@@ -87,10 +87,10 @@ public:
 		std::vector<Strategie::Strategy> strategie{ Strategie::Strategy::all,Strategie::Strategy::bfs,Strategie::Strategy::dfs,Strategie::Strategy::astr };
 		for (auto x : strategie)
 		{
-			//zapisz_do_wykresu_przetworzonych_stanow(x);
-            //zapisz_do_wykresu_odwiedzonych_stanow(x);
-            //zapisz_do_wykresu_dlugosc_rozwiazania(x);
-            //zapisz_do_wykresu_maksymalna_glebokosc_rekursji(x);
+			zapisz_do_wykresu_przetworzonych_stanow(x);
+            zapisz_do_wykresu_odwiedzonych_stanow(x);
+            zapisz_do_wykresu_dlugosc_rozwiazania(x);
+            zapisz_do_wykresu_maksymalna_glebokosc_rekursji(x);
             zapisz_do_wykresu_czas_procesu(x);
 
 		}

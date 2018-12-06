@@ -44,8 +44,7 @@ void Glowna::wczytaj()
 			plik >> elem;
             if (elem.algorytm == "dfs"  || elem.algorytm == "DFS")  dfsy.push_back(elem);
             if (elem.algorytm == "bfs"  || elem.algorytm == "BFS")  bfsy.push_back(elem);
-            if (elem.algorytm == "astr" || elem.algorytm == "ASTR") 
-                astars.push_back(elem);
+            if (elem.algorytm == "astr" || elem.algorytm == "ASTR") astars.push_back(elem);
  			dane.push_back(elem);
 		}
 	}	
